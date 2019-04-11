@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--        <script type='text/javascript' src="ReadBook.js"></script>-->
+
+        <style></style>
+    
+    </head>
+    <body>
+        <div id="response">
+            <table id="booklist" border="1">
+                <tr id="heading">
+                    <th>Title</th>
+                    <th>Authors</th>
+                    <th>Category</th>
+                    <th>Year</th>
+                    <th>Cost</th>
+                </tr>
+            </table>
+        </div>
+        <input id="input" type="button" value="Call AJAX" />    
+    
+    
+    <div id="books">
+        </div>
+    
+    
+    </body>
+
+
+<script>
+    $(document).ready(function() {
+        $('#input').click(function () {
+            var txt = "";
+            $.ajax({
+                type: 'GET',
+                url: 'books.xml',
+                dataType: 'xml',
+                success: function(data) {
+                    $(data).find('book').each(function() {
+                        x =   $(this).find('author') ;
+                        txt = "";
+                        for(i = 0 ; i < x.length ; i++)
+                        {
+                            if(i != x.length -1)
+                                txt += x[i].childNodes[0].nodeValue + " , " ;
+                            else
+								txt += x[i].childNodes[0].nodeValue;
+
+                        }
+                        
+                        $('#booklist').append(
+                            '<tr>' +
+                                '<td>' +
+                                    $(this).find('title').text() + 
+								'</td> ' +
+                                '<td>' +
+                                    txt 
+                                    + 
+								'</td>' +
+                                '<td>' +
+                                    $(this).attr('category') + '</td> ' +
+                                '<td>' +
+                                    $(this).find('year').text() + 
+								'</td> ' +
+								'<td>' +
+                                    $(this).find('price').text() + 
+								'</td> ' +
+                            '</tr>');
+                    });
+                }
+            });
+        });
+    });
+    
+    
+    
+    </script>
+
+
+</html>
